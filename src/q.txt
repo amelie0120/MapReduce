@@ -1,1 +1,155 @@
-quiet:[3]
+quite:[2 3 6 8 9 10 11 12 14 16 18 19 21 22 23 24 25 26 27 31 33 37 38 40 41 42 43 44 46 47 48 49 50 51 52 55 56 58 59 60 61 62 63 64 65 67 69 71 72 73 74 79 82 83 84 85 89 91 92 93 95 97 99 101 102 103 104 105 106 107 108 109 110 111 113 114 115 116 117 118 119 120 121 122 123 124 125 126 128 129 130 131 132 133 134 135 136 137 138 140 142 143 146 147 149 152 153 154 156 157 158 159 160 161 162 163 164 167 168 169 170 171 172 173 174 176 177 178 179 181 182 183 184 188 189 190 191 193 274 276 278 283 288 289 290 298 302 305 306 315 318 321 325 327 330 331 332 333 337] 159 fisiere
+question:[2 6 7 10 11 15 27 29 34 40 41 42 43 49 50 53 54 56 60 63 65 68 70 71 74 77 88 90 91 96 97 103 105 106 107 109 110 111 112 113 114 116 117 119 120 121 122 123 125 126 127 128 129 130 131 132 134 135 138 139 140 142 145 146 148 151 152 153 154 155 156 157 158 160 163 164 165 166 168 170 171 175 177 178 179 181 183 192 279 282 291 292 294 297 298 303 306 309 312 315 321 323 325 329 337 348 352] 107 fisiere
+quickly:[9 37 41 47 59 61 62 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 80 81 82 83 84 86 87 89 91 92 93 95 96 97 99 100 101 104 105 109 110 111 113 114 115 116 119 120 124 125 126 128 130 131 132 133 134 135 137 146 147 148 151 152 154 155 156 157 158 159 160 166 169 177 179 180 183 186 189 193 278 289 290 292 297 315 317 325 330 331 333 336 337 338 341 347 355] 99 fisiere
+quick:[7 18 27 32 42 47 52 60 62 63 64 67 68 69 70 74 75 76 77 81 82 83 84 85 88 91 93 94 95 99 100 101 102 110 115 126 130 140 142 143 145 156 160 161 162 164 171 172 173 174 181 185 187 190 191 192 273 280 281 282 286 289 291 300 303 306 311 313 317 318 323 325 327 335 337 341 344 348 350 352 354 355] 82 fisiere
+quiet:[26 28 43 49 50 56 58 59 61 62 63 64 65 66 67 68 69 70 71 72 74 77 78 79 82 83 84 88 89 90 91 92 96 97 101 102 107 108 116 120 121 122 135 140 145 146 152 154 155 156 158 160 161 162 163 164 165 169 170 172 173 174 177 178 179 181 184 186 188 191 273 276 282 284 289 294 312 315 321 325 330] 81 fisiere
+quietly:[17 18 20 46 52 53 56 59 60 61 63 64 65 67 68 69 71 72 74 84 85 86 92 93 94 95 96 97 101 106 107 114 115 116 121 122 123 126 133 134 137 138 140 149 153 165 166 168 177 184 186 189 274 275 277 278 281 283 289 291 294 305 315 321 330 341 350] 67 fisiere
+questions:[3 16 20 26 27 30 35 41 44 48 53 59 60 62 63 64 65 67 68 72 74 77 83 84 91 96 104 105 109 115 117 120 122 126 127 128 131 133 135 137 138 139 140 142 156 166 172 173 177 178 181 192 282 293 294 303 315 325] 58 fisiere
+queer:[59 60 61 64 66 67 68 72 79 80 84 89 93 97 99 102 108 110 112 113 115 116 117 123 128 135 137 138 145 152 159 167 176 273 275 276 279 286 289 291 299 301 305 311 312 315 321 325 330 331 337 341 351] 53 fisiere
+quarter:[11 12 13 16 31 41 42 43 45 61 75 102 107 109 110 114 116 124 126 127 131 138 141 142 143 153 156 159 161 162 166 179 190 282 299 311 325 327 329 331 337 341 348 355] 44 fisiere
+queequeg:[273 276 277 278 279 280 283 284 285 286 288 289 290 291 292 293 294 295 297 298 302 303 311 312 318 321 325 327 328 330 334 341 344 351 352 354 355] 37 fisiere
+quicker:[64 65 67 68 74 82 83 84 85 86 88 91 97 101 112 115 121 126 162 168 173 175 177 276 355] 25 fisiere
+quest:[11 13 41 55 58 59 72 73 76 77 78 79 82 96 101 186 298 303 306 308 309 310 330 352] 24 fisiere
+quarterdeck:[223 274 289 295 298 299 302 303 305 307 314 315 325 331 336 337 345 348 350 354 355] 21 fisiere
+quivering:[69 75 76 83 89 101 104 113 114 121 123 125 126 137 138 179 187 325 350 352 355] 21 fisiere
+quarrel:[8 15 24 49 55 63 82 83 86 89 104 116 122 128 130 140 155 166 189 315] 20 fisiere
+qualities:[3 14 42 52 56 57 116 117 122 123 134 137 145 157 166 298 315 320 338] 19 fisiere
+queen:[61 67 74 77 78 88 96 116 117 273 301 302 325 330 331 334 346 350] 18 fisiere
+quantity:[38 129 148 151 162 177 179 273 274 289 302 318 323 327 334 338 341] 17 fisiere
+questioned:[12 34 44 61 72 76 77 80 83 86 89 91 96 138 151 306 309] 17 fisiere
+quit:[7 9 30 31 32 47 49 50 53 186 295 302 306 315 330 337 353] 17 fisiere
+quitted:[16 17 24 30 34 41 43 55 56 178 181 190 285 294 340 341] 16 fisiere
+quitting:[5 9 10 13 42 43 47 53 152 172 275 309 315 325 337] 15 fisiere
+queequegs:[277 278 285 286 289 290 291 293 311 321 325 330 341 348] 14 fisiere
+quality:[5 25 96 116 129 183 284 302 306 331 334] 11 fisiere
+quarrelling:[12 25 57 70 107 108 114 129 138 161 192] 11 fisiere
+quarters:[14 58 67 109 117 126 179 186 302 315 323] 11 fisiere
+quiver:[73 74 75 78 93 98 116 125 140 299 318] 11 fisiere
+questioning:[65 96 110 117 127 138 153 187 294 327] 10 fisiere
+quivered:[84 85 99 101 123 138 149 188 190 313] 10 fisiere
+quarrelled:[12 103 112 123 130 136 138 140] 8 fisiere
+queens:[65 96 273 298 306 331 336 350] 8 fisiere
+qualified:[13 17 152 183 306 326 328] 7 fisiere
+queerest:[64 89 148 279 289 299] 6 fisiere
+quaking:[60 69 72 73 119] 5 fisiere
+quartered:[40 44 47 59 143] 5 fisiere
+quickened:[66 67 85 98 179] 5 fisiere
+quickest:[62 63 70 144 338] 5 fisiere
+quietude:[172 299 302 345 355] 5 fisiere
+quill:[164 318 321 325 339] 5 fisiere
+quoted:[120 134 302 309 330] 5 fisiere
+quadrant:[266 347 349 350] 4 fisiere
+quadrille:[12 15 17 27] 4 fisiere
+quail:[87 100 160 190] 4 fisiere
+quailed:[71 75 101 303] 4 fisiere
+questioner:[83 126 171 192] 4 fisiere
+quickness:[1 4 10 96] 4 fisiere
+quaint:[169 289 327] 3 fisiere
+quaked:[91 188 276] 3 fisiere
+qualifications:[17 167 178] 3 fisiere
+quarried:[70 302 305] 3 fisiere
+quarto:[302 315 339] 3 fisiere
+quavering:[60 61 69] 3 fisiere
+queenly:[71 78 348] 3 fisiere
+queerer:[59 62 66] 3 fisiere
+queerness:[59 64 107] 3 fisiere
+quicken:[100 110 315] 3 fisiere
+quickening:[161 162 302] 3 fisiere
+quieted:[2 43 96] 3 fisiere
+quilt:[108 111 277] 3 fisiere
+quivers:[95 322 328] 3 fisiere
+quadrupeds:[321 327] 2 fisiere
+quaker:[289 298] 2 fisiere
+quantities:[116 140] 2 fisiere
+quarrelsome:[28 115] 2 fisiere
+quart:[103 165] 2 fisiere
+quarterboat:[302 337] 2 fisiere
+quebec:[281 327] 2 fisiere
+quelled:[168 190] 2 fisiere
+quicksand:[83 287] 2 fisiere
+quid:[273 315] 2 fisiere
+quiescent:[310 355] 2 fisiere
+quieter:[3 97] 2 fisiere
+quills:[276 293] 2 fisiere
+quito:[299 337] 2 fisiere
+quohog:[291 295] 2 fisiere
+quohogs:[287 327] 2 fisiere
+quote:[91 280] 2 fisiere
+qs:[67] 1 fisiere
+quackdoctors:[157] 1 fisiere
+quadrangle:[125] 1 fisiere
+quadrangular:[107] 1 fisiere
+quadruped:[306] 1 fisiere
+quaff:[328] 1 fisiere
+quaffed:[303] 1 fisiere
+quagmires:[69] 1 fisiere
+quaintness:[289] 1 fisiere
+quakeress:[293] 1 fisiere
+quakeresss:[307] 1 fisiere
+quakerish:[289] 1 fisiere
+quakerism:[289] 1 fisiere
+quakers:[289] 1 fisiere
+qualify:[183] 1 fisiere
+quand:[132] 1 fisiere
+quarantine:[325] 1 fisiere
+quarrelledthe:[130] 1 fisiere
+quarrels:[59] 1 fisiere
+quarrelsomedont:[273] 1 fisiere
+quarrelsomely:[321] 1 fisiere
+quarry:[88] 1 fisiere
+quartern:[163] 1 fisiere
+quartersessions:[157] 1 fisiere
+quarterthis:[311] 1 fisiere
+quartette:[179] 1 fisiere
+quartos:[154] 1 fisiere
+quarts:[338] 1 fisiere
+quay:[315] 1 fisiere
+queengold:[331] 1 fisiere
+queenpinmoney:[331] 1 fisiere
+queequega:[283] 1 fisiere
+queequegall:[337] 1 fisiere
+queequegespecially:[286] 1 fisiere
+queequegin:[277] 1 fisiere
+queequegnot:[290] 1 fisiere
+queequegoh:[341] 1 fisiere
+queequegqueequegall:[290] 1 fisiere
+queequegthe:[330] 1 fisiere
+queequegwhy:[278] 1 fisiere
+queerlooking:[109] 1 fisiere
+queerqueer:[341] 1 fisiere
+quell:[177] 1 fisiere
+quench:[82] 1 fisiere
+quenched:[84] 1 fisiere
+quenching:[111] 1 fisiere
+quenchless:[306] 1 fisiere
+querulous:[40] 1 fisiere
+questionable:[327] 1 fisiere
+questionably:[289] 1 fisiere
+questionare:[56] 1 fisiere
+questionfor:[188] 1 fisiere
+questioningly:[65] 1 fisiere
+questionings:[343] 1 fisiere
+questionof:[33] 1 fisiere
+questionsabout:[31] 1 fisiere
+questionsand:[31] 1 fisiere
+questionwhat:[131] 1 fisiere
+questionwould:[130] 1 fisiere
+quests:[60] 1 fisiere
+quickbeam:[89] 1 fisiere
+quickquick:[149] 1 fisiere
+quicksilver:[341] 1 fisiere
+quickwitted:[127] 1 fisiere
+quieasure:[108] 1 fisiere
+quiescence:[321] 1 fisiere
+quietest:[274] 1 fisiere
+quietfooted:[59] 1 fisiere
+quieti:[189] 1 fisiere
+quig:[305] 1 fisiere
+quilted:[318] 1 fisiere
+quits:[329] 1 fisiere
+quitthe:[273] 1 fisiere
+quixotic:[181] 1 fisiere
+quog:[302] 1 fisiere
+quoggy:[298] 1 fisiere
+quoin:[325] 1 fisiere
+quoins:[325] 1 fisiere

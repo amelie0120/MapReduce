@@ -11,13 +11,13 @@ Node *map(void *arg){
         perror("Error opening file");
         exit(1);
     }
-    char buffer[256];
+    char buffer[1024];
     //printf("File %s opened\n", args->filename);
     //args->hashmap = malloc(sizeof(args->hashmap));
 
     // Read the file line by line
     while (fgets(buffer, sizeof(buffer), file)) {
-        char *token = strtok(buffer, " \n,.:;!?"); // Specify delimiters
+        char *token = strtok(buffer, " \n"); // Specify delimiters
         while (token != NULL) {
             //printf("%s\n", token);
             
@@ -26,13 +26,16 @@ Node *map(void *arg){
             int j = 0;
             for (int i = 0; token[i] != '\0'; i++) {
                 if (isalpha(token[i]))
-                    token1[j++] = tolower((unsigned char)token[i]);
+                    token1[j++] = tolower(token[i]);
                 //token[i] =  // Convert each character to lowercase
             }
             token1[j] = '\0';
-            //FileNode *file = create_file_node(args->id);
-            insert(&args->map, token1, args->id, 0);
-            token = strtok(NULL, " \n,."); // Continue tokenizing
+            if (strcmp("zealand", token1) == 0){
+                printf("am gasit zealand in fisierul %d\n", args->id);
+            }
+            FileNode *file = create_file_node(args->id);
+            insert(&args->map, token1, file, 0);
+            token = strtok(NULL, " \n"); // Continue tokenizing
         }
     }
 
@@ -46,7 +49,7 @@ Node *map(void *arg){
     
     
     fclose(file);
-    printf("finished %s\n", args->filename);
+    //printf("finished %s\n", args->filename);
     return args->map;
 }
 

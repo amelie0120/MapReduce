@@ -12,13 +12,6 @@
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
-// char *strdup(const char *s) {
-//     char *dup = malloc(strlen(s) + 1);
-//     if (dup) {
-//         strcpy(dup, s);
-//     }
-//     return dup;
-// }
 
 FileNode *create_file_node(int nr){
 	FileNode *file = malloc(sizeof(FileNode));
@@ -31,7 +24,7 @@ FileNode *create_file_node(int nr){
 	return file;
 }
 
-Node *create_node(char *word, int file) {
+Node *create_node(char *word, FileNode *file) {
 	
     Node *node = malloc(sizeof(Node));
     if (!node) {
@@ -45,201 +38,79 @@ Node *create_node(char *word, int file) {
         exit(1);
     }
 	//FileNode *f = create_file_node(file);
-	//node->files = file;
-	insert_last(&node->files, file);
+	node->files = file;
     node->left = node->right = NULL;
     return node;
 }
 
-FileNode *insert_last(FileNode **root, int file){
-	FileNode *new = create_file_node(file);
-	if (!(*root)){
-		*root = new;
-		return *root;
-	}
-	
-	//FileNode *filetoinsert = file;
-	FileNode *current = *root;
-	if (file < current->nr){	
-		new->next = (*root);
-		(*root)->prev = new;
-		(*root) = new;
-		return new;
-	}
-	//while (filetoinsert){
+FileNode *insert_last(FileNode **node, FileNode *file){
+
+	FileNode *filetoinsert = file;
+	while(filetoinsert){
+		FileNode *new = create_file_node(filetoinsert->nr);
+		if (!(*node)){
+			(*node) = new;
+		}
+		else{
+			FileNode *current = *node;
+			if (filetoinsert->nr < current->nr){
+				new->next = (*node);
+				(*node)->prev = new;
+				(*node) = new;
+			}
+			else{
+				while (current->next != NULL && current->next->nr < filetoinsert->nr)
+					current = current->next;
+
+				if (current->next == NULL){
+					new->prev = current;
+					current->next = new;
+					
+				}
+				else{
+					new->next = current->next;
+					new->prev = current;
+					current->next->prev = new;
+					current->next = new;
+				}
+			}
+		}
+		filetoinsert = filetoinsert->next;
 		
-	while (current->next != NULL && current->next->nr < file){
-		current = current->next;
 	}
 
-	if (current->nr == file){
-		return NULL;
-	}
-
-	if (current->next == NULL){
-		new->prev = current;
-		current->next = new;
-
-	}
-	else {
-		//adaug inainte
-		new->next = current->next;
-		new->prev = current;
-		current->next->prev = new;
-		current->next = new;
-	}
-	
-	
-	return (*root);
+	return (*node);
 }
 
-Node *insert(Node **root, char *word, int file, int reduce) {
-	// FileNode *curr = file;
-	// int nr = 0;
-	// while (curr){
-	// 	curr = curr->next;
-	// 	nr++;
-	// }
+Node *insert(Node **root, char *word, FileNode *file, int reduce) {
 
     if (!*root){
 		(*root) = create_node(word, file);
-		//(*root)->nr_files = nr;
 		return (*root);
 	}
 
 	Node *current = (*root);
 
-	// if (reduce == 0){
-	// 	Node *nou = create_node(word, file);
-	// 	nou->right = (*root);
-	// 	(*root)->left = nou;
-	// 	(*root) = nou;
-	// 	// while (current->right != NULL){// && strcmp(word, current->word) > 0){
-	// 	// 	current = current->right;
-	// 	// }
-	
-	// 	// nou->left = current;
-	// 	// current->right = nou;
-	
-	// 	return nou;
-	// 	}
-	
 	while (current->right != NULL && strcmp(word, current->word)){
 			current = current->right;
 		}
 	if (strcmp(word, current->word) == 0){
-		//FileNode *fisier = create_file_node(file);
-		//FileNode *curr = current->files;
-		//int nr = 0;
-		//while (curr){
 		insert_last(&current->files, file);
-			//curr = curr->next;
-			//nr++;
-		//}
-		//current->nr_files += nr;
 		return current;
 	}
 
 	Node *nou = create_node(word, file);
 	
-	//nou->nr_files = nr;
 	nou->left = current;
 	current->right = nou;
 	
 	return nou;
 }
-void swap_nodes(Node **head, char *word1, char *word2){
-	// Node *prev1 = NULL, *prev2 = NULL;
-    // Node *curr1 = *head, *curr2 = *head;
-
-    // // Find x and its previous node
-    // while (curr1 && strcmp(curr1->word, word1)) {
-    //     prev1 = curr1;
-    //     curr1 = curr1->right;
-    // }
-
-    // // Find y and its previous node
-    // while (curr2 && strcmp(curr2->word, word2)) {
-    //     prev2 = curr2;
-    //     curr2 = curr2->right;
-    // }
-
-    // // If either x or y is not present, return
-    // if (!curr1 || !curr2) return;
-
-    // // If x is not the head, update prevX->next
-    // if (prev1)
-    //     prev1->right = curr2;
-    // else // Else make y the new head
-    //     *head = curr2;
-
-    // // If y is not the head, update prevY->next
-    // if (prev2)
-    //     prev2->right = curr1;
-    // else // Else make x the new head
-    //     *head = curr1;
-
-    // // Swap next pointers
-    // Node *temp = curr1->right;
-    // curr1->right = curr2->right;
-    // curr2->right = temp;
-}
-
-
-void sort_list(Node **root){
-// 	if (*root == NULL || (*root)->right == NULL)
-// 		return;
-
-// 	//int go = 1;
-// 	Node *curr1 = (*root);
-// 	while (curr1){
-// 		//go = 0;
-// 		Node *curr2 = curr1->right;
-// 		while (curr2){
-// 			// if (curr1 == curr2)
-// 			// 	curr2 = curr2->right;
-// 			// 	continue;
-// 			if (curr1->nr_files == curr2->nr_files){
-// 				if (strcmp(curr1->word, curr2->word) > 0){
-// 					//printf("o sa faca swap intre %s si %s\n", curr1->word, curr2->word);
-// 					// char *word = curr1->word;
-// 					// //int files = curr1->
-// 					// curr1->word = curr2->word;
-// 					// curr2->word = word;
-// 					swap_nodes(root, curr1->word, curr2->word);
-// 					Node *aux = curr1;
-// 					curr1 = curr2;
-// 					curr2 = aux;
-// 					//printf("acum curr1 e %s si curr2 e %s\n", curr1->word, curr2->word);
-// 					//go = 1;
-// 				}
-// 			}
-// 			else if (curr1->nr_files < curr2->nr_files){
-// 				//printf("o sa faca swap intre %s si %s\n", curr1->word, curr2->word);
-// 				swap_nodes(root, curr1->word, curr2->word);
-// 				Node *aux = curr1;
-// 				curr1 = curr2;
-// 				curr2 = aux;
-// 				//printf("acum curr1 e %s si curr2 e %s\n", curr1->word, curr2->word);
-// 				//go = 1;
-// 			}
-// 			curr2 = curr2->right;
-// 			//else if (curr1->nr_files < curr2->nr_files)
-// 		}
-// 		curr1 = curr1->right;
-// 	}
-}
 
 Node *insert_sorted(Node **root, char *word, FileNode *files, int nrfiles){
 	// printf("%s to be inserted\n", word);
 	
-	Node *nou = create_node(word, files->nr);
-	FileNode *aux = files->next;
-	while(aux){
-		printf("insereaza %d pentru %s\n", aux->nr, word);
-		insert_last(&nou->files, aux->nr);
-		aux = aux->next;
-	}
+	Node *nou = create_node(word, files);
 	FileNode *curr = files;
 	nou->nr_files = 0;
 	while (curr){
@@ -248,35 +119,12 @@ Node *insert_sorted(Node **root, char *word, FileNode *files, int nrfiles){
 	}
 	if (!*root){
 		(*root) = nou;
-		//(*root)->nr_files = 1;
-		// printf("e radacina\n");
+		
 		return (*root);
 	}
-	// printf("nu e primul\n");
 	Node *current = (*root);
-	// while (current != NULL) {
-    //     // If `new_node` should come before `current`
-    //     if (nrfiles > current->nr_files || (nrfiles == current->nr_files && strcmp(word, current->word) < 0)) {
-    //         nou->right = current;
-    //         nou->left = current->left;
-
-    //         if (current->left) {
-    //             current->left->right = nou;
-    //         } else {
-    //             *root = nou; // Update head if inserting at the start
-    //         }
-    //         current->left = nou;
-    //         return nou;
-    //     }
-
-    //     // Move to the next node
-        
-    //     current = current->right;
-    // }
-
 
 	while (current->right != NULL && current->nr_files > nou->nr_files){
-		
 		current = current->right;
 	}
 	while (current->right != NULL && strcmp(word, current->word) > 0 && current->nr_files == nou->nr_files){
@@ -286,8 +134,7 @@ Node *insert_sorted(Node **root, char *word, FileNode *files, int nrfiles){
 	if (current->right != NULL){
 		if (strcmp(word, current->word) < 0 && nou->nr_files >= current->nr_files){
 			//adaug inainte
-			//Node *new = create_node(word, files);
-			//new->nr_files = 1;
+			
 			if (current == (*root)){
 				nou->right = (*root);
 				(*root)->left = nou;
@@ -338,13 +185,100 @@ Node *insert_sorted(Node **root, char *word, FileNode *files, int nrfiles){
 
 }
 
+void swap_nodes(Node **head, char *word1, char *word2){
+	Node *prev1 = NULL, *prev2 = NULL;
+    Node *curr1 = *head, *curr2 = *head;
+
+    // Find x and its previous node
+    while (curr1 && strcmp(curr1->word, word1)) {
+        prev1 = curr1;
+        curr1 = curr1->right;
+    }
+
+    // Find y and its previous node
+    while (curr2 && strcmp(curr2->word, word2)) {
+        prev2 = curr2;
+        curr2 = curr2->right;
+    }
+
+    // If either x or y is not present, return
+    if (!curr1 || !curr2) return;
+
+    // If x is not the head, update prevX->next
+    if (prev1)
+        prev1->right = curr2;
+    else // Else make y the new head
+        *head = curr2;
+
+    // If y is not the head, update prevY->next
+    if (prev2)
+        prev2->right = curr1;
+    else // Else make x the new head
+        *head = curr1;
+
+    // Swap next pointers
+    Node *temp = curr1->right;
+    curr1->right = curr2->right;
+    curr2->right = temp;
+}
+
+void sort_list(Node **root){
+	if (*root == NULL || (*root)->right == NULL)
+		return;
+
+	//int go = 1;
+	Node *curr1 = (*root);
+	while (curr1){
+		//go = 0;
+		Node *curr2 = curr1->right;
+		while (curr2){
+			// if (curr1 == curr2)
+			// 	curr2 = curr2->right;
+			// 	continue;
+			if (curr1->nr_files == curr2->nr_files){
+				if (strcmp(curr1->word, curr2->word) > 0){
+					//printf("o sa faca swap intre %s si %s\n", curr1->word, curr2->word);
+					// char *word = curr1->word;
+					// //int files = curr1->
+					// curr1->word = curr2->word;
+					// curr2->word = word;
+					swap_nodes(root, curr1->word, curr2->word);
+					Node *aux = curr1;
+					curr1 = curr2;
+					curr2 = aux;
+					//printf("acum curr1 e %s si curr2 e %s\n", curr1->word, curr2->word);
+					//go = 1;
+				}
+			}
+			else if (curr1->nr_files < curr2->nr_files){
+				//printf("o sa faca swap intre %s si %s\n", curr1->word, curr2->word);
+				swap_nodes(root, curr1->word, curr2->word);
+				Node *aux = curr1;
+				curr1 = curr2;
+				curr2 = aux;
+				//printf("acum curr1 e %s si curr2 e %s\n", curr1->word, curr2->word);
+				//go = 1;
+			}
+			curr2 = curr2->right;
+			//else if (curr1->nr_files < curr2->nr_files)
+		}
+		curr1 = curr1->right;
+	}
+}
+
 void *reduce(void *arg){
     ReduceArg *arguments = (ReduceArg *) arg;
 	//printf("litera e %c\n", arguments->letter);
 	
-	char filename[6];
+	char filename[15];
+	//printf("test_par/%c%s\n", arguments->letter, ".txt");
 	sprintf(filename, "%c%s", arguments->letter, ".txt");
-	FILE *file = fopen(filename, "w");
+	//printf("in fisierul %s\n", filename);
+	FILE *file = fopen(filename, "w+");
+	if (!file) {
+        perror("Error opening file");
+        exit(1);
+    }
 	//printf("in fisierul %s\n", filename);
 
 	Node *root = NULL;
@@ -353,37 +287,27 @@ void *reduce(void *arg){
 	Node *current = arguments->map_big;
 	while (current != NULL){
 		if (current->word[0] == arguments->letter){
-			printf("se adauga %s\n", current->word);
 			insert_sorted(&root, current->word, current->files, current->nr_files);
-			// int nr = 0;
-			// FileNode *curr = current->files;
-			// while (curr){
-			// 	//printf("%d ", curr->nr);
-			// 	curr = curr->next;
-			// 	nr++;
-			// }
-			// current->nr_files = nr;
 		}
-			//nr_nodes++;
 		current = current->right;
 	}
 
-	current = root;
-	while (current){
-		printf("%s:", current->word);
-		//int nr = 0;
-		// FileNode *curr = current->files;
-		// while (curr){
-		// 	printf("%d ", curr->nr);
-		// 	curr = curr->next;
-		// 	//nr++;
-		// }
-		//current->nr_files = nr;
-		printf("are %d fisiere\n", current->nr_files);
-		current = current->right;
-	}
+	// current = root;
+	// while (current){
+	// 	printf("%s:", current->word);
+	// 	//int nr = 0;
+	// 	FileNode *curr = current->files;
+	// 	while (curr){
+	// 		printf("%d ", curr->nr);
+	// 		curr = curr->next;
+	// 		//nr++;
+	// 	}
+	// 	//current->nr_files = nr;
+	// 	printf("are %d fisiere\n", current->nr_files);
+	// 	current = current->right;
+	// }
 
-	//sort_list(&root);
+	sort_list(&root);
 	current = root;
 	while (current){
 		fprintf(file, "%s:[", current->word);
@@ -397,7 +321,7 @@ void *reduce(void *arg){
 			curr = curr->next;
 			
 		}
-		fprintf(file, "]\n");
+		fprintf(file, "] %d fisiere\n", current->nr_files);
 		//current->nr_files = nr;
 		//printf("are %d fisiere\n", current->nr_files);
 		current = current->right;
@@ -561,21 +485,21 @@ static void *thread_loop_function(void *arg)
 					os_task_t *new_task = create_task((void *)reduce, (void *)arguments, NULL);
 					enqueue_task(tp, new_task);
 				}
-				Node *current = tp->map_big;
-				while (current){
-					printf("%s:", current->word);
-					//int nr = 0;
-					FileNode *curr = current->files;
-					while (curr){
-						printf("%d ", curr->nr);
-						curr = curr->next;
-						//nr++;
-					}
-					printf("\n");
-					//current->nr_files = nr;
-					//printf("are %d fisiere\n", current->nr_files);
-					current = current->right;
-				}
+				// Node *current = tp->map_big;
+				// while (current){
+				// 	printf("%s:", current->word);
+				// 	//int nr = 0;
+				// 	FileNode *curr = current->files;
+				// 	while (curr){
+				// 		printf("%d ", curr->nr);
+				// 		curr = curr->next;
+				// 		//nr++;
+				// 	}
+				// 	printf("\n");
+				// 	//current->nr_files = nr;
+				// 	//printf("are %d fisiere\n", current->nr_files);
+				// 	current = current->right;
+				// }
 			}
 			
 			tp->finished_threads ++;
@@ -595,8 +519,8 @@ static void *thread_loop_function(void *arg)
 			//Node *nou = create_node(current->word, args->id);
 
 			pthread_mutex_lock(&tp->mutex_access_map);
-			//FileNode *nodfisier = create_file_node(args->id);
-			insert(&tp->map_big, current->word, args->id, 0);
+			FileNode *nodfisier = create_file_node(args->id);
+			insert(&tp->map_big, current->word, nodfisier, 0);
 			// Node *current_big = tp->map_big;
 			// tp->number_pairs ++;
 			// if (!current_big){

@@ -76,10 +76,9 @@ typedef struct os_threadpool {
 //char *strdup(const char *s)
 FileNode *create_file_node(int nr);
 // Node *insert_sorted(Node **root, char *word, int file);
-FileNode *insert_last(FileNode **node, int file);
-Node *create_node(char *key, int value);
-Node *insert(Node **root, char *key, int value, int reduce);
-//Node *search(Node *root, const char *key);
+FileNode *insert_last(FileNode **node, FileNode *file);
+Node *create_node(char *key, FileNode *value);
+Node *insert(Node **root, char *key, FileNode *value, int reduce);
 
 os_task_t *create_task(void (*f)(void *), void *arg, void (*destroy_arg)(void *));
 void destroy_task(os_task_t *t);

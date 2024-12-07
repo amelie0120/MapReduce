@@ -1,0 +1,102 @@
+x:[110 114 135 137 150 283] 6 fisiere
+xiii:[12 153 286] 3 fisiere
+xiv:[12 154 287] 3 fisiere
+xlvi:[43 186 310] 3 fisiere
+xvi:[156 289 297] 3 fisiere
+xxxix:[179 289 305] 3 fisiere
+xerxes:[306 327] 2 fisiere
+xi:[151 284] 2 fisiere
+xii:[152 285] 2 fisiere
+xix:[159 292] 2 fisiere
+xl:[180 305] 2 fisiere
+xli:[181 306] 2 fisiere
+xlii:[182 306] 2 fisiere
+xliii:[183 307] 2 fisiere
+xliv:[184 308] 2 fisiere
+xlix:[189 312] 2 fisiere
+xlv:[185 309] 2 fisiere
+xlvii:[187 311] 2 fisiere
+xlviii:[188 311] 2 fisiere
+xv:[155 288] 2 fisiere
+xvii:[157 290] 2 fisiere
+xviii:[158 291] 2 fisiere
+xx:[160 293] 2 fisiere
+xxi:[161 294] 2 fisiere
+xxii:[162 295] 2 fisiere
+xxiii:[163 296] 2 fisiere
+xxiv:[164 297] 2 fisiere
+xxix:[169 299] 2 fisiere
+xxv:[165 298] 2 fisiere
+xxvi:[166 298] 2 fisiere
+xxvii:[167 298] 2 fisiere
+xxviii:[168 299] 2 fisiere
+xxx:[170 300] 2 fisiere
+xxxi:[171 301] 2 fisiere
+xxxii:[172 302] 2 fisiere
+xxxiii:[173 302] 2 fisiere
+xxxiv:[174 302] 2 fisiere
+xxxv:[175 303] 2 fisiere
+xxxvi:[176 303] 2 fisiere
+xxxvii:[177 304] 2 fisiere
+xa:[203] 1 fisiere
+xactly:[117] 1 fisiere
+xc:[331] 1 fisiere
+xcheads:[250] 1 fisiere
+xci:[331] 1 fisiere
+xcii:[332] 1 fisiere
+xciiambergris:[251] 1 fisiere
+xciii:[333] 1 fisiere
+xciiithe:[252] 1 fisiere
+xcithe:[250] 1 fisiere
+xciv:[333] 1 fisiere
+xciva:[252] 1 fisiere
+xcix:[337] 1 fisiere
+xcixthe:[256] 1 fisiere
+xcv:[334] 1 fisiere
+xcvi:[335] 1 fisiere
+xcvii:[336] 1 fisiere
+xcviii:[336] 1 fisiere
+xcviiistowing:[255] 1 fisiere
+xcviithe:[255] 1 fisiere
+xcvithe:[254] 1 fisiere
+xcvthe:[253] 1 fisiere
+xiibiographical:[205] 1 fisiere
+xiiiwheelbarrow:[206] 1 fisiere
+xinightgown:[204] 1 fisiere
+xivnantucket:[207] 1 fisiere
+xixthe:[212] 1 fisiere
+xlforecastlemidnight:[225] 1 fisiere
+xliiihark:[227] 1 fisiere
+xliithe:[226] 1 fisiere
+xlimoby:[226] 1 fisiere
+xlivthe:[228] 1 fisiere
+xlixthe:[232] 1 fisiere
+xlviiithe:[231] 1 fisiere
+xlviithe:[231] 1 fisiere
+xlvisurmises:[230] 1 fisiere
+xlvthe:[229] 1 fisiere
+xvchowder:[208] 1 fisiere
+xviiihis:[211] 1 fisiere
+xviithe:[210] 1 fisiere
+xvithe:[209] 1 fisiere
+xxall:[213] 1 fisiere
+xxigoing:[214] 1 fisiere
+xxiiithe:[216] 1 fisiere
+xxiimerry:[215] 1 fisiere
+xxivthe:[217] 1 fisiere
+xxixenter:[219] 1 fisiere
+xxviiiahab:[219] 1 fisiere
+xxviiknights:[218] 1 fisiere
+xxviknights:[218] 1 fisiere
+xxvpostscript:[218] 1 fisiere
+xxxiicetology:[222] 1 fisiere
+xxxiiithe:[222] 1 fisiere
+xxxiqueen:[221] 1 fisiere
+xxxivthe:[222] 1 fisiere
+xxxixfirst:[225] 1 fisiere
+xxxthe:[220] 1 fisiere
+xxxviii:[305] 1 fisiere
+xxxviiidusk:[225] 1 fisiere
+xxxviisunset:[224] 1 fisiere
+xxxvithe:[223] 1 fisiere
+xxxvthe:[223] 1 fisiere
