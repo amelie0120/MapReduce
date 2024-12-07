@@ -62,17 +62,13 @@ FileNode *insert_last(FileNode **node, FileNode *file){
 				while (current->next != NULL && current->next->nr < filetoinsert->nr)
 					current = current->next;
 
-				if (current->next == NULL){
-					new->prev = current;
-					current->next = new;
-					
-				}
-				else{
-					new->next = current->next;
-					new->prev = current;
-					current->next->prev = new;
-					current->next = new;
-				}
+				new->next = current->next;
+                new->prev = current;
+
+                if (current->next) {
+                    current->next->prev = new;
+                }
+                current->next = new;
 			}
 		}
 		filetoinsert = filetoinsert->next;
@@ -83,9 +79,16 @@ FileNode *insert_last(FileNode **node, FileNode *file){
 }
 
 Node *insert(Node **root, char *word, FileNode *file, int reduce) {
+	Node *nou = create_node(word, file);
+	nou->nr_files = 0;
+	FileNode *curr = file;
+	while (curr){
+		nou->nr_files ++;
+		curr = curr->next;
+	}
 
     if (!*root){
-		(*root) = create_node(word, file);
+		(*root) = nou;
 		return (*root);
 	}
 
@@ -99,7 +102,7 @@ Node *insert(Node **root, char *word, FileNode *file, int reduce) {
 		return current;
 	}
 
-	Node *nou = create_node(word, file);
+	
 	
 	nou->left = current;
 	current->right = nou;
@@ -107,9 +110,7 @@ Node *insert(Node **root, char *word, FileNode *file, int reduce) {
 	return nou;
 }
 
-Node *insert_sorted(Node **root, char *word, FileNode *files, int nrfiles){
-	// printf("%s to be inserted\n", word);
-	
+Node *insert_final(Node **root, char *word, FileNode *files){
 	Node *nou = create_node(word, files);
 	FileNode *curr = files;
 	nou->nr_files = 0;
@@ -117,73 +118,152 @@ Node *insert_sorted(Node **root, char *word, FileNode *files, int nrfiles){
 		nou->nr_files++;
 		curr = curr->next;
 	}
-	if (!*root){
+
+	if (!(*root)){
 		(*root) = nou;
-		
 		return (*root);
 	}
-	Node *current = (*root);
 
-	while (current->right != NULL && current->nr_files > nou->nr_files){
-		current = current->right;
-	}
-	while (current->right != NULL && strcmp(word, current->word) > 0 && current->nr_files == nou->nr_files){
-		current = current->right;
-	}
-
-	if (current->right != NULL){
-		if (strcmp(word, current->word) < 0 && nou->nr_files >= current->nr_files){
-			//adaug inainte
-			
-			if (current == (*root)){
-				nou->right = (*root);
-				(*root)->left = nou;
-				(*root) = nou;
-			}
-			else{
-				nou->right = current;
-				nou->left = current->left;
-				current->left->right = nou;
-				current->left = nou;
-			}
-		}
-		else{
-			//adaug dupa; nu e ult elem sigur
-			nou->left = current;
-			nou->right = current->right;
-			current->right->left = nou;
-			current->right = nou;
-			
-
-		}
-	}
-	else if (current->right == NULL){
-		if (strcmp(word, current->word) < 0 && nou->nr_files >= current->nr_files){
-			//Node *new = create_node(word, files);
-			//new->nr_files = 1;
-			if (current == (*root)){
-				nou->right = (*root);
-				(*root)->left = nou;
-				(*root) = nou;
-			}
-			else{
-				nou->right = current;
-				nou->left = current->left;
-				current->left->right = nou;
-				current->left = nou;
-			}
-			
-		}
-		else {
-			//Node *new = create_node(word, files);
-			//new->nr_files = 1;
-			nou->left = current;
-			current->right = nou;
-		}
-	}
-	return nou;
-
+	nou->right = (*root);
+	(*root)->left = nou;
+	(*root) = nou;
+	return (*root);
 }
+
+// Node *insert_sorted(Node **root, char *word, FileNode *files, int nrfiles){
+// 	// printf("%s to be inserted\n", word);
+	
+// 	Node *nou = create_node(word, files);
+// 	FileNode *curr = files;
+// 	nou->nr_files = 0;
+// 	while (curr){
+// 		nou->nr_files++;
+// 		curr = curr->next;
+// 	}
+// 	if (!*root){
+// 		(*root) = nou;
+		
+// 		return (*root);
+// 	}
+// 	Node *current = (*root);
+
+// 	while (current->right != NULL && current->nr_files > nou->nr_files){
+// 		current = current->right;
+// 	}
+// 	while (current->right != NULL && strcmp(word, current->word) > 0 && current->nr_files == nou->nr_files){
+// 		current = current->right;
+// 	}
+
+// 	if (current->right != NULL){
+// 		if (strcmp(word, current->word) < 0 && nou->nr_files >= current->nr_files){
+// 			//adaug inainte
+			
+// 			if (current == (*root)){
+// 				nou->right = (*root);
+// 				(*root)->left = nou;
+// 				(*root) = nou;
+// 			}
+// 			else{
+// 				nou->right = current;
+// 				nou->left = current->left;
+// 				current->left->right = nou;
+// 				current->left = nou;
+// 			}
+// 		}
+// 		else{
+// 			//adaug dupa; nu e ult elem sigur
+// 			nou->left = current;
+// 			nou->right = current->right;
+// 			current->right->left = nou;
+// 			current->right = nou;
+			
+
+// 		}
+// 	}
+// 	else if (current->right == NULL){
+// 		if (strcmp(word, current->word) < 0 && nou->nr_files >= current->nr_files){
+// 			//Node *new = create_node(word, files);
+// 			//new->nr_files = 1;
+// 			if (current == (*root)){
+// 				nou->right = (*root);
+// 				(*root)->left = nou;
+// 				(*root) = nou;
+// 			}
+// 			else{
+// 				nou->right = current;
+// 				nou->left = current->left;
+// 				current->left->right = nou;
+// 				current->left = nou;
+// 			}
+			
+// 		}
+// 		else {
+// 			//Node *new = create_node(word, files);
+// 			//new->nr_files = 1;
+// 			nou->left = current;
+// 			current->right = nou;
+// 		}
+// 	}
+// 	return nou;
+
+// }
+
+Node *insert_sorted(Node **root, char *word, FileNode *files, int nrfiles) {
+    // Create the new node
+    Node *new_node = create_node(word, files);
+    FileNode *curr = files;
+    new_node->nr_files = 0;
+    while (curr) {  // Count the number of files
+        new_node->nr_files++;
+        curr = curr->next;
+    }
+
+    // If the list is empty, set root to the new node
+    if (!(*root)) {
+        *root = new_node;
+        return *root;
+    }
+
+    Node *current = *root;
+
+    // Traverse the list to find the correct position
+    while (current != NULL) {
+        if (new_node->nr_files > current->nr_files) {
+            // Insert before the current node
+            new_node->right = current;
+            new_node->left = current->left;
+            if (current->left) {
+                current->left->right = new_node;
+            } else {
+                *root = new_node; // Update root if inserting at the head
+            }
+            current->left = new_node;
+            return new_node;
+        } else if (new_node->nr_files == current->nr_files && strcmp(word, current->word) < 0) {
+            // Insert before the current node (lexicographical order)
+            new_node->right = current;
+            new_node->left = current->left;
+            if (current->left) {
+                current->left->right = new_node;
+            } else {
+                *root = new_node; // Update root if inserting at the head
+            }
+            current->left = new_node;
+            return new_node;
+        }
+        // Move to the next node
+        if (current->right == NULL) {
+            break; // Stop if we're at the end
+        }
+        current = current->right;
+    }
+
+    // Insert at the end of the list
+    current->right = new_node;
+    new_node->left = current;
+    return new_node;
+}
+
 
 void swap_nodes(Node **head, char *word1, char *word2){
 	Node *prev1 = NULL, *prev2 = NULL;
@@ -287,7 +367,7 @@ void *reduce(void *arg){
 	Node *current = arguments->map_big;
 	while (current != NULL){
 		if (current->word[0] == arguments->letter){
-			insert_sorted(&root, current->word, current->files, current->nr_files);
+			insert_sorted(&root, current->word, current->files, 0);
 		}
 		current = current->right;
 	}
@@ -307,7 +387,7 @@ void *reduce(void *arg){
 	// 	current = current->right;
 	// }
 
-	sort_list(&root);
+	//sort_list(&root);
 	current = root;
 	while (current){
 		fprintf(file, "%s:[", current->word);
@@ -321,7 +401,7 @@ void *reduce(void *arg){
 			curr = curr->next;
 			
 		}
-		fprintf(file, "] %d fisiere\n", current->nr_files);
+		fprintf(file, "]\n");
 		//current->nr_files = nr;
 		//printf("are %d fisiere\n", current->nr_files);
 		current = current->right;

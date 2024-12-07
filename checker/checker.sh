@@ -170,7 +170,7 @@ do
                 echo "Testul nu a dat rezultate corecte"
             fi
 
-            rm -rf test_sec
+            #rm -rf test_sec
 
             # se creste valoarea de timeout cu 2 secunde
             times=$((times+2))
@@ -238,7 +238,7 @@ do
                 fi
             fi
 
-            rm -rf test_par
+            #rm -rf test_par
         fi
 
         echo "OK"

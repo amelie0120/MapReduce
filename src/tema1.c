@@ -4,6 +4,16 @@
 #include <ctype.h>
 #include "os_threadpool.h"
 
+void process_word(const char *input, char *output) {
+    int j = 0;
+    for (int i = 0; input[i] != '\0'; i++) {
+        if (isalpha(input[i])) { // Verifică dacă este caracter alfabetic
+            output[j++] = tolower(input[i]); // Transformă în litere mici
+        }
+    }
+    output[j] = '\0'; // Terminator de șir
+}
+
 Node *map(void *arg){
     ThreadArgs *args = (ThreadArgs *)arg;
     FILE *file = fopen(args->filename, "r");
@@ -12,30 +22,52 @@ Node *map(void *arg){
         exit(1);
     }
     char buffer[1024];
+    char word[256];
+    char leftover[256] = "";
     //printf("File %s opened\n", args->filename);
     //args->hashmap = malloc(sizeof(args->hashmap));
 
     // Read the file line by line
     while (fgets(buffer, sizeof(buffer), file)) {
-        char *token = strtok(buffer, " \n"); // Specify delimiters
-        while (token != NULL) {
-            //printf("%s\n", token);
-            
-            //printf("%s\n", token); // Print each word
-            char token1[strlen(token)];
-            int j = 0;
-            for (int i = 0; token[i] != '\0'; i++) {
-                if (isalpha(token[i]))
-                    token1[j++] = tolower(token[i]);
-                //token[i] =  // Convert each character to lowercase
+         if (strlen(leftover) > 0) {
+            memmove(buffer + strlen(leftover), buffer, strlen(buffer) + 1); // Shift buffer content
+            strncpy(buffer, leftover, strlen(leftover));                   // Copy leftover to buffer
+            leftover[0] = '\0';                                            // Clear leftover
+        }
+
+        int len = strlen(buffer);
+        int start = 0;
+
+        // Parcurge linia pentru a extrage cuvintele
+        for (int i = 0; i <= len; i++) {
+            if (isspace(buffer[i]) || buffer[i] == '\0') {
+                // Găsit spațiu sau finalul liniei
+                if (i > start) {
+                    char temp[256];
+                    strncpy(temp, &buffer[start], i - start); // Copiază cuvântul
+                    temp[i - start] = '\0';
+                    process_word(temp, word); // Procesează cuvântul
+                    if (strlen(word) > 0) {   // Verifică dacă e valid
+                        //printf("%s\n", word);
+                        FileNode *file = create_file_node(args->id);
+                        insert(&args->map, word, file, 0);
+                    }
+                }
+                start = i + 1;
             }
-            token1[j] = '\0';
-            if (strcmp("zealand", token1) == 0){
-                printf("am gasit zealand in fisierul %d\n", args->id);
-            }
+        }
+        if (start < len) {
+            strncpy(leftover, &buffer[start], len - start); // Save the leftover
+            leftover[len - start] = '\0'; // Null-terminate
+        }
+    }
+
+    if (strlen(leftover) > 0) {
+        process_word(leftover, word); // Process the word
+
+        if (strlen(word) > 0) {
             FileNode *file = create_file_node(args->id);
-            insert(&args->map, token1, file, 0);
-            token = strtok(NULL, " \n"); // Continue tokenizing
+            insert(&args->map, word, file, 0);
         }
     }
 
