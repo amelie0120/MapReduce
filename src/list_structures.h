@@ -1,26 +1,19 @@
-/* SPDX-License-Identifier: BSD-3-Clause */
-
-/*
- * Heavily inspired for Linux kernel code:
- * https://github.com/torvalds/linux/blob/master/include/linux/list.h
- */
-
 #ifndef __OS_LIST_H__
 #define __OS_LIST_H__	1
 
 #include <stddef.h>
 
-typedef struct os_list_node_t {
-	struct os_list_node_t *prev, *next;
-} os_list_node_t;
+typedef struct queue_list {
+	struct queue_list *prev, *next;
+} queue_list;
 
-static inline void list_init(os_list_node_t *head)
+static inline void list_init(queue_list *head)
 {
 	head->prev = head;
 	head->next = head;
 }
 
-static inline void list_add(os_list_node_t *head, os_list_node_t *node)
+static inline void list_add(queue_list *head, queue_list *node)
 {
 	node->next = head->next;
 	node->prev = head;
@@ -28,7 +21,7 @@ static inline void list_add(os_list_node_t *head, os_list_node_t *node)
 	head->next = node;
 }
 
-static inline void list_add_tail(os_list_node_t *head, os_list_node_t *node)
+static inline void list_add_tail(queue_list *head, queue_list *node)
 {
 	node->prev = head->prev;
 	node->next = head;
@@ -36,7 +29,7 @@ static inline void list_add_tail(os_list_node_t *head, os_list_node_t *node)
 	head->prev = node;
 }
 
-static inline void list_del(os_list_node_t *node)
+static inline void list_del(queue_list *node)
 {
 	node->prev->next = node->next;
 	node->next->prev = node->prev;
@@ -44,7 +37,7 @@ static inline void list_del(os_list_node_t *node)
 	node->prev = node;
 }
 
-static inline int list_empty(os_list_node_t *head)
+static inline int list_empty(queue_list *head)
 {
 	return (head->next == head);
 }
@@ -53,9 +46,6 @@ static inline int list_empty(os_list_node_t *head)
 		void *tmp = (void *)(ptr);			\
 		(type *) (tmp - offsetof(type, member));	\
 	})
-
-#define list_for_each(pos, head) \
-		for (pos = (head)->next; pos != (head); pos = pos->next)
 
 #define list_for_each_safe(pos, tmp, head) \
 	for (pos = (head)->next, tmp = pos->next; pos != (head); \
