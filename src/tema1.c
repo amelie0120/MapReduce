@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "threadpool.h"
+#include "os_threadpool.h"
 
 void process_word(const char *input, char *output) {
     int j = 0;
     for (int i = 0; input[i] != '\0'; i++) {
         if (isalpha(input[i])) { 
-            output[j++] = tolower(input[i]); 
+            output[j++] = tolower(input[i]);
         }
     }
     output[j] = '\0'; 
@@ -27,7 +27,7 @@ Node *map(void *arg){
     char leftover[256] = "";
 
     while (fgets(buffer, sizeof(buffer), file)) {
-        if (strlen(leftover) > 0) {
+         if (strlen(leftover) > 0) {
             memmove(buffer + strlen(leftover), buffer, strlen(buffer) + 1); 
             strncpy(buffer, leftover, strlen(leftover));                   
             leftover[0] = '\0';                                            
@@ -40,9 +40,9 @@ Node *map(void *arg){
             if (isspace(buffer[i])) {
                 if (i > start) {
                     char temp[256];
-                    strncpy(temp, &buffer[start], i - start);
+                    strncpy(temp, &buffer[start], i - start); 
                     temp[i - start] = '\0';
-                    process_word(temp, word); 
+                    process_word(temp, word);
                     if (strlen(word) > 0) {
                         FileNode *file = create_file_node(args->id);
                         insert(&args->map, word, file, 1);
@@ -52,19 +52,20 @@ Node *map(void *arg){
             }
         }
         if (start < len) {
-            strncpy(leftover, &buffer[start], len - start); 
+            strncpy(leftover, &buffer[start], len - start);
             leftover[len - start] = '\0'; 
         }
     }
 
     if (strlen(leftover) > 0) {
         process_word(leftover, word);
+
         if (strlen(word) > 0) {
             FileNode *file = create_file_node(args->id);
             insert(&args->map, word, file, 1);
         }
     }
-
+    
     fclose(file);
     return args->map;
 }
@@ -132,6 +133,11 @@ int main(int argc, char **argv){
 
     wait_for_completion(tp);
     destroy_threadpool(tp);
+
+    // for (int i = 1; i <= nr_fisiere; i++){
+    //     free(args[i]);
+    // }
+    // free(args);
 
     fclose(file);
     return 0;
