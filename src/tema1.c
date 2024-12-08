@@ -21,6 +21,8 @@ Node *map(void *arg){
         perror("Error opening file");
         exit(1);
     }
+    int checkpoint = 0;
+
     char buffer[1024];
     char word[256];
     char leftover[256] = "";
@@ -40,7 +42,7 @@ Node *map(void *arg){
 
         // Parcurge linia pentru a extrage cuvintele
         for (int i = 0; i <= len; i++) {
-            if (isspace(buffer[i]) || buffer[i] == '\0') {
+            if (isspace(buffer[i])) {
                 // Găsit spațiu sau finalul liniei
                 if (i > start) {
                     char temp[256];
@@ -49,6 +51,9 @@ Node *map(void *arg){
                     process_word(temp, word); // Procesează cuvântul
                     if (strlen(word) > 0) {   // Verifică dacă e valid
                         //printf("%s\n", word);
+                        // if (args->id == 80)
+                        //     printf("%s ", word);
+                        
                         FileNode *file = create_file_node(args->id);
                         insert(&args->map, word, file, 0);
                     }
@@ -59,8 +64,12 @@ Node *map(void *arg){
         if (start < len) {
             strncpy(leftover, &buffer[start], len - start); // Save the leftover
             leftover[len - start] = '\0'; // Null-terminate
+            // if (args->id == 80)
+            //     printf("%s ", leftover);
         }
     }
+    // if (args->id == 80)
+    //     printf("\n");
 
     if (strlen(leftover) > 0) {
         process_word(leftover, word); // Process the word
