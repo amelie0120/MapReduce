@@ -20,8 +20,9 @@ typedef struct Node {
 } Node;
 
 typedef struct {
-	Node *map_big;
+	Node **maps;
 	char letter;
+	int nr_fisiere;
 } ReduceArg;
 
 typedef struct {
@@ -51,6 +52,7 @@ typedef struct os_threadpool {
 	int number_pairs;
 	int start_reducer;
 	char find_letter;
+	int nr_fisiere;
 
 	/*
 	 * Head of queue used to store tasks.
@@ -63,12 +65,14 @@ typedef struct os_threadpool {
 
 	/* TODO: Define threapool / queue synchronization data. */
 	pthread_mutex_t mutex;
-	//pthread_mutex_t mutex_semafor;
+	pthread_mutex_t mutex_start_reduce;
 	pthread_mutex_t mutex_access_map;
 	pthread_mutex_t mutex_start;
     pthread_cond_t condition;
 	pthread_cond_t cond_start_map;
-	//pthread_cond_t cond_start_reduce;
+
+	pthread_barrier_t bariera;
+	pthread_cond_t cond_start_reduce;
 	
 	//pthread_cond_t cond_start_reduce;
 } os_threadpool_t;
@@ -76,9 +80,9 @@ typedef struct os_threadpool {
 //char *strdup(const char *s)
 FileNode *create_file_node(int nr);
 // Node *insert_sorted(Node **root, char *word, int file);
-FileNode *insert_last(FileNode **node, FileNode *file);
+FileNode *insert_file(FileNode **node, FileNode *file);
 Node *create_node(char *key, FileNode *value);
-Node *insert(Node **root, char *key, FileNode *value, int reduce);
+Node *insert(Node **root, char *key, FileNode *value, int map);
 
 os_task_t *create_task(void (*f)(void *), void *arg, void (*destroy_arg)(void *));
 void destroy_task(os_task_t *t);

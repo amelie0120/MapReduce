@@ -43,7 +43,7 @@ Node *create_node(char *word, FileNode *file) {
     return node;
 }
 
-FileNode *insert_last(FileNode **node, FileNode *file){
+FileNode *insert_file(FileNode **node, FileNode *file){
 
 	FileNode *filetoinsert = file;
 	while(filetoinsert){
@@ -62,6 +62,9 @@ FileNode *insert_last(FileNode **node, FileNode *file){
 				while (current->next != NULL && current->next->nr < filetoinsert->nr)
 					current = current->next;
 
+				if (current->next && current->next->nr == filetoinsert->nr)
+					return (*node);
+
 				new->next = current->next;
                 new->prev = current;
 
@@ -78,7 +81,61 @@ FileNode *insert_last(FileNode **node, FileNode *file){
 	return (*node);
 }
 
-Node *insert(Node **root, char *word, FileNode *file, int reduce) {
+Node *insert_alphabetically(Node **root, char *word, FileNode *file, int map) {
+	Node *nou = create_node(word, file);
+	nou->nr_files = 0;
+
+	FileNode *curr = file;
+	while (curr){
+		nou->nr_files ++;
+		curr = curr->next;
+	}
+
+    if (!*root){
+		(*root) = nou;
+		return (*root);
+	}
+
+	Node *current = (*root);
+	Node *prev = NULL;
+
+	while (current && strcmp(word, current->word) > 0){
+		prev = current;
+		current = current->right;
+	}
+	if (current && strcmp(word, current->word) == 0){
+		if (map){
+			return current;
+		}
+		insert_file(&current->files, file);
+		FileNode *curr = current->files;
+		int nr = 0;
+		while (curr){
+			nr ++;
+			curr = curr->next;
+		}
+		current->nr_files = nr;
+		return current;
+	}
+
+	if (!current) {  // Case: New word is greater than all existing words
+        prev->right = nou;
+        nou->left = prev;
+    } else if (!prev) {  // Case: New word is smaller than all existing words
+        nou->right = *root;
+        (*root)->left = nou;
+        *root = nou;
+    } else {  // General case: Insert between two nodes
+        prev->right = nou;
+        nou->left = prev;
+        nou->right = current;
+        current->left = nou;
+    }
+	
+	return nou;
+}
+
+Node *insert(Node **root, char *word, FileNode *file, int map) {
 	Node *nou = create_node(word, file);
 	nou->nr_files = 0;
 	FileNode *curr = file;
@@ -98,7 +155,17 @@ Node *insert(Node **root, char *word, FileNode *file, int reduce) {
 			current = current->right;
 		}
 	if (strcmp(word, current->word) == 0){
-		insert_last(&current->files, file);
+		if (map){
+			return current;
+		}
+		insert_file(&current->files, file);
+		FileNode *curr = current->files;
+		int nr = 0;
+		while (curr){
+			nr ++;
+			curr = curr->next;
+		}
+		current->nr_files = nr;
 		return current;
 	}
 
@@ -208,7 +275,7 @@ Node *insert_final(Node **root, char *word, FileNode *files){
 
 // }
 
-Node *insert_sorted(Node **root, char *word, FileNode *files, int nrfiles) {
+Node *insert_sorted(Node **root, char *word, FileNode *files) {
     // Create the new node
     Node *new_node = create_node(word, files);
     FileNode *curr = files;
@@ -364,13 +431,18 @@ void *reduce(void *arg){
 	Node *root = NULL;
 	//int nr_nodes = 0;
 	
-	Node *current = arguments->map_big;
-	while (current != NULL){
-		if (current->word[0] == arguments->letter){
-			insert_sorted(&root, current->word, current->files, 0);
+	Node **lists = arguments->maps;
+	// printf("%s\n", lists[1]->word);
+	for (int i = 1; i <= arguments->nr_fisiere; i++){
+		Node *current = lists[i];
+		while (current != NULL){
+			if (current->word[0] == arguments->letter){
+				insert_alphabetically(&root, current->word, current->files, 0);
+			}
+			current = current->right;
 		}
-		current = current->right;
 	}
+	
 
 	// current = root;
 	// while (current){
@@ -388,7 +460,14 @@ void *reduce(void *arg){
 	// }
 
 	//sort_list(&root);
-	current = root;
+	Node *root_sorted = NULL;
+	Node *current = root;
+	while (current){
+		insert_sorted(&root_sorted, current->word, current->files);
+		current = current->right;
+	}
+
+	current = root_sorted;
 	while (current){
 		fprintf(file, "%s:[", current->word);
 		int nr = 0;
@@ -406,6 +485,7 @@ void *reduce(void *arg){
 		//printf("are %d fisiere\n", current->nr_files);
 		current = current->right;
 	}
+	//printf("inchide fisierul %s\n", filename);
 	fclose(file);
     return NULL;
 }
@@ -515,12 +595,17 @@ os_task_t *dequeue_task2(os_threadpool_t *tp)
 
 void *functie(void *arg){
 	os_threadpool_t *tp = (os_threadpool_t *) arg;
-	while(1){
-		if (tp->finished_threads == tp->num_threads_M){
-			break;
-		}
-		
+	pthread_mutex_lock(&tp->mutex_start);
+	if (tp->finished_threads < tp->num_threads_M){
+		pthread_cond_wait(&tp->cond_start_reduce, &tp->mutex_start);
 	}
+	pthread_mutex_unlock(&tp->mutex_start);
+	// while(1){
+	// 	if (tp->finished_threads == tp->num_threads_M){
+	// 		break;
+	// 	}
+		
+	// }
 
 	while (1) {
 		os_task_t *t;
@@ -561,10 +646,29 @@ static void *thread_loop_function(void *arg)
 				for (char c = 'a'; c <= 'z'; c++){
 					ReduceArg *arguments = malloc(sizeof(ReduceArg));
 					arguments->letter = c;
-					arguments->map_big = tp->map_big;
+					// arguments->maps = malloc((tp->nr_fisiere + 1) * sizeof(Node *));
+					// for (int i = 0; i <= tp->nr_fisiere; i++)
+					// 	arguments->maps[i] = malloc(sizeof(Node *));
+					arguments->maps = tp->list_of_lists;
+					arguments->nr_fisiere = tp->nr_fisiere;
+					// printf("%s\n", arguments->maps[1]->word);
+					//arguments->nr_fisiere = tp->nr
 					os_task_t *new_task = create_task((void *)reduce, (void *)arguments, NULL);
 					enqueue_task(tp, new_task);
 				}
+				// for (int i = 1; i <= tp->nr_fisiere; i++){
+				// 	Node *current = tp->list_of_lists[i];
+				// 	while (current != NULL){
+				// 		printf("%s: ", current->word);
+				// 		FileNode *curr = current->files;
+				// 		while (curr){
+				// 			printf("%d ", curr->nr);
+				// 			curr = curr->next;
+				// 		}
+				// 		printf("\n");
+				// 		current = current->right;
+				// 	}
+				// }
 				// Node *current = tp->map_big;
 				// while (current){
 				// 	printf("%s:", current->word);
@@ -581,9 +685,11 @@ static void *thread_loop_function(void *arg)
 				// 	current = current->right;
 				// }
 			}
-			
+			//printf("au ajuns %d thread uri aici\n", tp->finished_threads + 1);
 			tp->finished_threads ++;
 			pthread_mutex_unlock(&tp->mutex_start);
+			pthread_barrier_wait((&tp->bariera));
+			pthread_cond_broadcast(&tp->cond_start_reduce);
 			
 			
 			break;
@@ -593,30 +699,31 @@ static void *thread_loop_function(void *arg)
 		ThreadArgs *args = (ThreadArgs *)t->argument;
 		
 		destroy_task(t);
+		tp->list_of_lists[args->id] = args->map;
+		//printf("a terminat lista %d\n", args->id);
+		// Node *current = args->map;
+		// while(current != NULL){
+		// 	//Node *nou = create_node(current->word, args->id);
 
-		Node *current = args->map;
-		while(current != NULL){
-			//Node *nou = create_node(current->word, args->id);
+		// 	pthread_mutex_lock(&tp->mutex_access_map);
+		// 	FileNode *nodfisier = create_file_node(args->id);
+		// 	insert(&tp->map_big, current->word, nodfisier);
+		// 	// Node *current_big = tp->map_big;
+		// 	// tp->number_pairs ++;
+		// 	// if (!current_big){
+		// 	// 	tp->map_big = nou;
+		// 	// }
+		// 	// else{
+		// 	// 	while (current_big->right != NULL){
+		// 	// 		current_big = current_big->right;
+		// 	// 	}
+		// 	// 	nou->left = current_big;
+		// 	// 	current_big->right = nou;
+		// 	// }
+		// 	pthread_mutex_unlock(&tp->mutex_access_map);
 
-			pthread_mutex_lock(&tp->mutex_access_map);
-			FileNode *nodfisier = create_file_node(args->id);
-			insert(&tp->map_big, current->word, nodfisier, 0);
-			// Node *current_big = tp->map_big;
-			// tp->number_pairs ++;
-			// if (!current_big){
-			// 	tp->map_big = nou;
-			// }
-			// else{
-			// 	while (current_big->right != NULL){
-			// 		current_big = current_big->right;
-			// 	}
-			// 	nou->left = current_big;
-			// 	current_big->right = nou;
-			// }
-			pthread_mutex_unlock(&tp->mutex_access_map);
-
-			current = current->right;
-		}
+		// 	current = current->right;
+		// }
 	}
 
 	return NULL;
@@ -653,6 +760,11 @@ os_threadpool_t *create_threadpool(unsigned int num_threads_M, unsigned int num_
 		perror("pthread_mutex_init");
 		exit(1);
 	}
+	rc = pthread_mutex_init(&tp->mutex_start_reduce, NULL);
+	if (rc != 0){
+		perror("pthread_mutex_init");
+		exit(1);
+	}
 	rc = pthread_mutex_init(&tp->mutex_access_map, NULL);
 	if (rc != 0){
 		perror("pthread_mutex_init");
@@ -666,10 +778,17 @@ os_threadpool_t *create_threadpool(unsigned int num_threads_M, unsigned int num_
 
 	pthread_cond_init(&tp->condition, NULL);
 	pthread_cond_init(&tp->cond_start_map, NULL);
+	pthread_cond_init(&tp->cond_start_reduce, NULL);
+	pthread_barrier_init(&tp->bariera, NULL, num_threads_M);
 
 	tp->num_threads_M = num_threads_M;
 	tp->num_threads_R = num_threads_R;
+	tp->nr_fisiere = nr_fisiere;
 	//tp->list_of_lists = malloc(26 * sizeof(Node *));
+
+	tp->list_of_lists = malloc((nr_fisiere + 1) * sizeof(Node *));
+	for (int i = 1; i <= nr_fisiere; i++)
+		tp->list_of_lists[i] = malloc(sizeof(Node));
 	
 	tp->threads = malloc((tp->num_threads_M + tp->num_threads_R + 1) * sizeof(*tp->threads));
 	if (tp->threads == NULL){
@@ -705,8 +824,11 @@ void destroy_threadpool(os_threadpool_t *tp)
 	//pthread_mutex_destroy(&tp->mutex_semafor);
 	pthread_mutex_destroy(&tp->mutex_access_map);
 	pthread_mutex_destroy(&tp->mutex_start);
+	pthread_mutex_destroy(&tp->mutex_start_reduce);
 	pthread_cond_destroy(&tp->cond_start_map);
 	pthread_cond_destroy(&tp->condition);
+	pthread_cond_destroy(&tp->cond_start_reduce);
+	pthread_barrier_destroy(&tp->bariera);
 	//pthread_cond_destroy(&tp->cond_start_reduce);
 	list_for_each_safe(n, p, &tp->head) {
 		list_del(n);

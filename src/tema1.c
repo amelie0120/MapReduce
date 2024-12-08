@@ -55,7 +55,7 @@ Node *map(void *arg){
                         //     printf("%s ", word);
                         
                         FileNode *file = create_file_node(args->id);
-                        insert(&args->map, word, file, 0);
+                        insert(&args->map, word, file, 1);
                     }
                 }
                 start = i + 1;
@@ -76,7 +76,7 @@ Node *map(void *arg){
 
         if (strlen(word) > 0) {
             FileNode *file = create_file_node(args->id);
-            insert(&args->map, word, file, 0);
+            insert(&args->map, word, file, 1);
         }
     }
 
