@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.7"
 services:
   apd_service:
     build: .
@@ -6,3 +6,12 @@ services:
     entrypoint: /bin/bash
     stdin_open: true
     tty: true
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+  app:
+    build:
+      context: .
+    volumes:
+      - .:/app  

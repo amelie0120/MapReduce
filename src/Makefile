@@ -1,4 +1,4 @@
 build:
-		gcc main.c -o tema1 -lpthread
+		gcc -Wall -Werror tema1.c os_threadpool.c -o tema1 -lpthread
 clean:
 		rm tema1
