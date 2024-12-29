@@ -70,7 +70,9 @@ FileNode *insert_file(FileNode **node, FileNode *file){
                 current->next = new;
 			}
 		}
-		filetoinsert = filetoinsert->next;
+		FileNode *nextfile = filetoinsert->next;
+		free(filetoinsert);
+		filetoinsert = nextfile;
 		
 	}
 
@@ -246,13 +248,31 @@ void *reduce(void *arg){
 			fprintf(file, "%d", curr->nr);
 			if (nr < current->nr_files)
 				fprintf(file, " ");
-			curr = curr->next;
+			FileNode *nextfile = curr->next;
+			curr = nextfile;
 			
 		}
 		fprintf(file, "]\n");
-		current = current->right;
+		Node *next = current->right;
+		free(current);
+		current = next;
 	}
 	fclose(file);
+
+	current = root;
+    while (current != NULL) {
+        Node *next = current->right;
+		FileNode *curr = current->files;
+		while(curr){
+			FileNode *nextfile = curr->next;
+			free(curr);
+			curr = nextfile;
+		} 
+        free(current);              
+        current = next;             
+    }
+
+	free(arg);
     return NULL;
 }
 os_task_t *create_task(void (*action)(void *), void *arg, void (*destroy_arg)(void *))
@@ -527,6 +547,10 @@ void destroy_threadpool(os_threadpool_t *tp)
 		list_del(n);
 		destroy_task(list_entry(n, os_task_t, list));
 	}
+
+	for (int i = 1; i <= tp->nr_fisiere; i++)
+		free(tp->list_of_lists[i]);
+	free(tp->list_of_lists);
 
 	free(tp->threads);
 	free(tp);

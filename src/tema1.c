@@ -134,10 +134,14 @@ int main(int argc, char **argv){
     wait_for_completion(tp);
     destroy_threadpool(tp);
 
-    // for (int i = 1; i <= nr_fisiere; i++){
-    //     free(args[i]);
-    // }
-    // free(args);
+    for (int i = 1; i <= nr_fisiere; i++){
+        free(args[i]);
+    }
+    free(args);
+
+    for (int i = 1; i < lineCount; i++)
+        free(lines[i]);
+    free(lines);
 
     fclose(file);
     return 0;
